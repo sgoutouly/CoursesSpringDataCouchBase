@@ -38,17 +38,19 @@ public class N1QL {
 		out.println(beers.info().resultCount());
 	}
 	
-	// TODO Need to block to force the test waiting the async response or somthing like this ...
 	@Test public void selectOnBeerAsync() {		
 		// Simple select on sample beer async bucket
 		Observable<AsyncN1qlQueryResult> beers = beerSample.async().query(simple(select("*").from(i("beer-sample")).limit(10)));
 		// Handling async result
 		beers.subscribe(result -> {
-			result.info().subscribe(info -> assertEquals(10, info.resultCount()));
-			out.println(result.errors().map(errors -> errors.toString()));
-			out.println(result.info().map(info -> info.resultCount()));
-			out.println(result.info().map(info -> info.elapsedTime()));
+			result.errors().subscribe(errors -> out.println(errors.toString()));
+			result.info().subscribe(info -> {
+				assertEquals(10, info.resultCount());	
+				out.println(info.elapsedTime());
+				out.println(info.resultCount());
+			});
 		});	
+		beers.toBlocking().singleOrDefault(null); // We block to force junit into waiting for the result
 	}
 	
 	
