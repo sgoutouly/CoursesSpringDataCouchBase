@@ -1,0 +1,62 @@
+<!doctype html>
+<html class="no-js" lang="fr" > 
+<head>
+		<meta charset="UTF-8">
+		<title>Courses</title>
+		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+		<script type="text/javascript" charset="utf-8" src="http://localhost:35729/livereload.js"></script>	
+		<link rel="stylesheet" href="stylesheets/knacss.css" media="all">
+		<link rel="stylesheet" href="stylesheets/styles.css" media="all">
+		<link rel="stylesheet" href="stylesheets/animations.css" media="all">
+		<link rel="stylesheet" href="stylesheets/menu.css" media="all">
+		<link rel="shortcut icon" href="images/favicon.ico">
+</head>
+<body ng-app="courses">
+
+	<header>
+		<button id="menuBouton" class="menuButton">|||</button>
+		<div class="txtcenter biggest">Les courses	</div>
+	</header>
+
+	<div class="menu" tb-menu-left>
+		<div class="inner-menu">
+			<div class="menu-bloc-message txtcenter mt2">
+				<img src="images/courses-logo-rond-sma.jpg" />
+			</div>
+			<ul class="mt2" ng-controller="MenuCtrl">
+				<li class="menu-item" ng-class="navClass('listesEnCours')">
+					<a href="#/listesEnCours"><span>Les listes en cours</span></a>
+				</li>
+				<li class="menu-item" ng-class="navClass('creationListe')">
+					<a href="#/creationListe"><span>Créer une liste vierge</span></a>
+				</li> 
+				<li class="menu-item" ng-class="navClass('openChat')">
+					<a href="#/openChat	"><span>Rejoindre le chat</span></a>
+				</li> 
+				</li>
+				<li class="menu-item" ng-class="navClass('deconnexion')">
+					<a href="/logout"><span>Déconnexion</span></a>
+				</li> 
+			</ul>
+		</div>
+	</div>
+
+	<div ng-view class="pas animation-fade">
+		<p class="txtcenter wait h3-like">Chargement des données ...</p>
+	</div>
+
+	<script type="text/javascript" charset="utf-8" src="javascripts/lib/angular.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="javascripts/lib/angular-route.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="javascripts/lib/angular-animate.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="javascripts/lib/speedclick.js"></script>
+	<!--script type="text/javascript" charset="utf-8" src="javascripts/lib/main.js"></script-->
+    <script type="text/javascript" charset="utf-8" src="javascripts/routes"></script>
+    <script type="text/javascript" charset="utf-8" src="javascripts/app/ModApp.js"></script>
+	<script type="text/javascript" charset="utf-8" src="javascripts/app/ModToolBox.js"></script>
+	<script type="text/javascript" charset="utf-8" src="javascripts/mock/ModServices.js"></script>
+	<script type="text/javascript" charset="utf-8" src="javascripts/mock/courses_db.js"></script>
+	<script type="text/javascript" charset="utf-8" src="javascripts/app/ModControleurs.js"></script>
+	<script type="text/javascript" charset="utf-8" src="javascripts/app/ModErrors.js"></script>
+	<script type="text/javascript" charset="utf-8" src="javascripts/app/ModChat.js"></script>
+</body>
+</html>
