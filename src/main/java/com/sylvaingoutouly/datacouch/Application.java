@@ -8,7 +8,7 @@ import org.springframework.data.couchbase.repository.config.EnableCouchbaseRepos
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 
 @SpringBootApplication
-@EnableHypermediaSupport(type = {HAL})
+@EnableHypermediaSupport(type = HAL)
 @EnableCouchbaseRepositories(basePackages = { "com.sylvaingoutouly.datacouch.repository" })
 public class Application {
 
