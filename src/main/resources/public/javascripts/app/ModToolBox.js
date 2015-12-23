@@ -15,7 +15,10 @@ toolBoxServices.factory('toolbox_http',['$http',function($http) {
 
   	return {
 	    get : function(url) {
-			return $http.get(url).then(	
+	    	var config = {
+    			 headers: {'Accept': "application/hal+json"}
+	    	}
+			return $http.get(url).then(
 				function(result) {return result.data;}, 
 				function(result) {handleError(result);}
 			)
