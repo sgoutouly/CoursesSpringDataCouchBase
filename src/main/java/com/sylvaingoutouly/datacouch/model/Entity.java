@@ -9,6 +9,8 @@ import com.couchbase.client.java.repository.annotation.Id;
 /**
  * Abastraction pour mutualiser la gestion des IDs pour
  * toutes les entités
+ * 
+ * Une classe de service permettrait de gérer ceci
  */
 @Getter
 public abstract class Entity {

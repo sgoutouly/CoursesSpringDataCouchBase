@@ -1,7 +1,7 @@
 {
   "name": "Courses",
   "version": "SpringDataCouchbase",
-  "description": "Implémentation de la liste des courses basée sur Spring, Spring DataCouchbase, CouchBase 4,1 et AngularJS",
+  "description": "Implémentation de la liste des courses basée sur Spring, Spring Data Couchbase, CouchBase 4,1 et AngularJS",
   "main": "Gruntfile.js",
   "directories": {
     "test": "test"

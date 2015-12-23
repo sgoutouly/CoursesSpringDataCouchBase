@@ -14,6 +14,7 @@ import com.couchbase.client.java.repository.annotation.Field;
 @Document	
 public class Liste extends Entity {
 
+	@Field public String titre;
 	@Field public String dateRedaction;
     @Field public String dateCourse;
     @Field public List<Course> courses;

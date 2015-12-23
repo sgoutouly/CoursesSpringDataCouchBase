@@ -1,5 +1,8 @@
 package com.sylvaingoutouly.datacouch.api;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
@@ -8,9 +11,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,14 +22,16 @@ import com.sylvaingoutouly.datacouch.model.Liste;
 import com.sylvaingoutouly.datacouch.repository.ListeRepository;
 
 @RestController 
-@RequestMapping( value = "/courses/listes" , produces = "application/json")
+@RequestMapping( value = "/courses/listes")
 public class ListesController {
 
 	@Autowired ListeRepository listes;
 	
 	@RequestMapping(method = GET, value = "/{id}")
-	public HttpEntity<?> liste(@PathVariable String id) {
-		return ok(listes.findOne(id));
+	public HttpEntity<?> liste(@PathVariable final String id) {
+		Resource<Liste> resource = new Resource<Liste>(listes.findOne(id));
+		resource.add(linkTo(methodOn(ListesController.class).liste(id)).withSelfRel());
+		return ok(resource);
 	}
 
 	@RequestMapping(method = GET, value = "/")
@@ -45,7 +49,7 @@ public class ListesController {
 	public HttpEntity<?> add(@RequestBody Liste liste) {
 		liste.newId(); // Une classe de service permettrait de gérer ceci
 		listes.save(liste);
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		return created(linkTo(methodOn(this.getClass()).liste(liste.getId())).toUri()).build();
 	}
 	
 	@RequestMapping(method = DELETE, value = "/{id}")

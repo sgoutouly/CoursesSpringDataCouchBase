@@ -6,7 +6,8 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.sylvaingoutouly.datacouch.model.Liste;
 
-@N1qlPrimaryIndexed @ViewIndexed(viewName = "all", designDoc = "liste")
+@N1qlPrimaryIndexed 
+@ViewIndexed(viewName = "all", designDoc = "liste")
 public interface ListeRepository extends CrudRepository<Liste, String> {
 
 }
