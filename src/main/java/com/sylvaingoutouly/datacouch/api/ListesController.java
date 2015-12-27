@@ -10,6 +10,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
+import java.util.concurrent.Callable;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
@@ -29,36 +31,46 @@ public class ListesController {
 	@Autowired ListeRepository listes;
 	
 	@RequestMapping(method = GET, value = "/{id}")
-	public HttpEntity<?> liste(@PathVariable final String id) {
-		Resource<Liste> resource = new Resource<Liste>(listes.findOne(id));
-		resource.add(linkTo(methodOn(ListesController.class).liste(id)).withSelfRel());
-		return ok(resource);
+	public Callable<HttpEntity<?>> liste(@PathVariable final String id) {
+		return () -> {
+			Resource<Liste> resource = new Resource<Liste>(listes.findOne(id));
+			resource.add(linkTo(methodOn(ListesController.class).liste(id)).withSelfRel());
+			return ok(resource);
+		};
 	}
 
-	@RequestMapping(method = GET, value = "/")
-	public HttpEntity<?> listes() {
-		Resources<Liste> resources = new Resources<Liste>(listes.findAll());
-		resources.add(linkTo(methodOn(ListesController.class).listes()).withSelfRel());
-		return ok(resources);
+	@RequestMapping(method = GET)
+	public Callable<HttpEntity<?>> listes() {
+		return () -> {
+			Resources<Liste> resources = new Resources<Liste>(listes.findAll());
+			resources.add(linkTo(methodOn(ListesController.class).listes()).withSelfRel());
+			return ok(resources);
+		};
 	}
 	
 	@RequestMapping(method = PUT, value = "/{id}")
-	public HttpEntity<?> update(@RequestBody Liste liste, @PathVariable String id) {
-		listes.save(liste);
-		return noContent().build();
+	public Callable<HttpEntity<?>> update(@RequestBody Liste liste, @PathVariable String id) {
+		return () -> {
+			listes.save(liste);
+			return noContent().build();
+		};
 	}
 	
-	@RequestMapping(method = POST, value = "/")
-	public HttpEntity<?> add(@RequestBody Liste liste) {
-		liste.newId(); // Une classe de service permettrait de gérer ceci
-		listes.save(liste);
-		return created(linkTo(methodOn(this.getClass()).liste(liste.getId())).toUri()).build();
+	@RequestMapping(method = POST)
+	public Callable<HttpEntity<?>> add(@RequestBody Liste liste) {
+		return () -> {
+			liste.newId(); // Une classe de service permettrait de gérer ceci
+			listes.save(liste);
+			return created(linkTo(methodOn(this.getClass()).liste(liste.getId())).toUri()).build();
+		};
 	}
 	
 	@RequestMapping(method = DELETE, value = "/{id}")
-	public HttpEntity<?> delete(@PathVariable String id) {
-		listes.delete(id);
-		return noContent().build();
+	public Callable<HttpEntity<?>> delete(@PathVariable String id) {
+		return () -> {
+			listes.delete(id);
+			return noContent().build();
+		};
 	}
 	
 }
