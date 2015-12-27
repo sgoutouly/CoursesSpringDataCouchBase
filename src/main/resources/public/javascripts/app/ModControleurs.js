@@ -51,9 +51,6 @@ modControleurs.controller("CreationListeCtrl", ["$scope", "ComposantParametres",
   	/**
   	 * Ajoute un course à la liste
   	 */
-  	  	/**
-  	 * Ajoute un course à la liste
-  	 */
   	$scope.addCourse = function() {
 		ajouterCourse($scope.formCourses, {
 			designation : $scope.formDesignation.designation, 

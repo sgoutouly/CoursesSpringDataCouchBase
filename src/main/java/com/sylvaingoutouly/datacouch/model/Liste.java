@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import org.springframework.data.annotation.Version;
 import org.springframework.data.couchbase.core.mapping.Document;
 
 import com.couchbase.client.java.repository.annotation.Field;
@@ -16,6 +17,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Document	
 public class Liste extends Entity {
 
+	@Version private long version;
+	
 	@Field public String titre;
 	@Field @JsonFormat(pattern = "dd/MM/yyyy") public Date dateRedaction;
     @Field @JsonFormat(pattern = "dd/MM/yyyy") public Date dateCourse;

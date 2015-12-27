@@ -61,6 +61,7 @@ public class ListesController {
 		return () -> {
 			liste.newId(); // Une classe de service permettrait de gérer ceci
 			listes.save(liste);
+			listes.count(); // FIX to see the insert immediatly (force view index to refresh ??)
 			return created(linkTo(methodOn(this.getClass()).liste(liste.getId())).toUri()).build();
 		};
 	}
