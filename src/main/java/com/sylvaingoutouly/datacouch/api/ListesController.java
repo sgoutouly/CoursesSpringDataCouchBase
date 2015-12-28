@@ -46,7 +46,7 @@ public class ListesController {
 	@RequestMapping(method = GET)
 	public Callable<HttpEntity<?>> listes() {
 		return () -> {
-			Resources<Liste> resources = new Resources<Liste>(listes.findAllListes());
+			Resources<Liste> resources = new Resources<Liste>(listes.findAll());
 			resources.add(linkTo(methodOn(ListesController.class).listes()).withSelfRel());
 			return ok(resources);
 		};
