@@ -168,7 +168,7 @@ modControleurs.controller("ModificationListeCtrl", ["$scope", "$routeParams", "C
 modControleurs.controller("AffichageListesEnCoursCtrl", ["$scope", "ComposantListe", function($scope, ComposantListe){
 	$scope.messageWait = "Chargement des données ..."
 	ComposantListe.rechercherListe().then(function(data) {
-			$scope.listes = data._embedded.listeList;
+			$scope.listes = data._embedded.listes;
 			$scope.messageWait = "";
 		}
 	)

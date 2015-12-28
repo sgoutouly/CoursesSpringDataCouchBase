@@ -10,6 +10,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +23,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sylvaingoutouly.datacouch.model.Liste;
+import com.sylvaingoutouly.datacouch.model.Test;
 import com.sylvaingoutouly.datacouch.repository.ListeRepository;
+import com.sylvaingoutouly.datacouch.repository.TestRepository;
 
 @RestController 
 @RequestMapping( value = "/courses/listes")
 public class ListesController {
 
 	@Autowired ListeRepository listes;
+	@Autowired TestRepository tests;
 	
 	@RequestMapping(method = GET, value = "/{id}")
 	public Callable<HttpEntity<?>> liste(@PathVariable final String id) {
@@ -42,7 +46,7 @@ public class ListesController {
 	@RequestMapping(method = GET)
 	public Callable<HttpEntity<?>> listes() {
 		return () -> {
-			Resources<Liste> resources = new Resources<Liste>(listes.findAll());
+			Resources<Liste> resources = new Resources<Liste>(listes.findAllListes());
 			resources.add(linkTo(methodOn(ListesController.class).listes()).withSelfRel());
 			return ok(resources);
 		};

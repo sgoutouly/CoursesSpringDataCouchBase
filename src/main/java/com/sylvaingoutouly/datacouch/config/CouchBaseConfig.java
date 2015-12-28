@@ -16,7 +16,7 @@ public class CouchBaseConfig extends AbstractCouchbaseConfiguration {
 
     @Override
     protected String getBucketName() {
-        return "beer-sample";
+        return "shopping-list";
     }
 
     @Override
