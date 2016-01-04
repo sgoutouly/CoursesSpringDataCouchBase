@@ -1,5 +1,7 @@
 <form name="form" class="css-form" novalidate>  
     <span class="mb1 txtleft item row">Liste créée le {{dateRedaction | date:'dd/MM/yyyy'}}</span>  
+    <label>Titre : </label>
+    <input type="text" name="titre" class="input-text w30" ng-model="formTitre" required />
     <label>Désignation : </label>
     <select class="select row" ng-model="formDesignation" name="designation" ng-options="p.designation group by p.categorie for p in paramListeProduits" required></select> 
     <label>Quantité : </label>

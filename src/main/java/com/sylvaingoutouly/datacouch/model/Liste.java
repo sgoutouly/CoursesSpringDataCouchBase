@@ -17,20 +17,20 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Data @EqualsAndHashCode(callSuper = true) @NoArgsConstructor // Lombok shortcuts 
 @Document // Document Couchbase
 @Relation(collectionRelation = "listes") // Sprint hateoas : name of the attribute holding the items collection
-public class Liste extends Entity {
+public class Liste extends Entity { 
 
 	@Version private long version; // Optimistic locking with Spring Data 
 	
-	@Field public String titre;
-	@Field @JsonFormat(pattern = "dd/MM/yyyy") public Date dateRedaction;
-    @Field @JsonFormat(pattern = "dd/MM/yyyy") public Date dateCourse;
-    @Field public List<Course> courses;
+	@Field private String titre;
+	@Field @JsonFormat(pattern = "dd/MM/yyyy") private Date dateRedaction;
+    @Field @JsonFormat(pattern = "dd/MM/yyyy") private Date dateCourse;
+    @Field private List<Course> courses;
     
     @Data @NoArgsConstructor
     public static class Course {
-    	@Field public String designation;
-    	@Field public int qte;
-    	@Field public String unite;
+    	@Field private String designation;
+    	@Field private int qte;
+    	@Field private String unite;
     }
     
 }

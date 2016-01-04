@@ -10,7 +10,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
-import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sylvaingoutouly.datacouch.model.Liste;
-import com.sylvaingoutouly.datacouch.model.Test;
 import com.sylvaingoutouly.datacouch.repository.ListeRepository;
 import com.sylvaingoutouly.datacouch.repository.TestRepository;
 
@@ -46,6 +44,7 @@ public class ListesController {
 	@RequestMapping(method = GET)
 	public Callable<HttpEntity<?>> listes() {
 		return () -> {
+			System.err.println(listes.findWithParam("une autre liste"));
 			Resources<Liste> resources = new Resources<Liste>(listes.findAll());
 			resources.add(linkTo(methodOn(ListesController.class).listes()).withSelfRel());
 			return ok(resources);

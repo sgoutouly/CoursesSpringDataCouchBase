@@ -8,6 +8,7 @@ import org.springframework.data.couchbase.core.query.ViewIndexed;
 import org.springframework.data.repository.CrudRepository;
 
 import com.sylvaingoutouly.datacouch.model.Liste;
+import com.sylvaingoutouly.datacouch.model.Test;
 
 @N1qlPrimaryIndexed 
 @ViewIndexed(viewName = "all", designDoc = "liste")
@@ -19,4 +20,6 @@ public interface ListeRepository extends CrudRepository<Liste, String> {
 	@Query("#{#n1ql.selectEntity} WHERE #{#n1ql.filter}")
 	List<Liste> findAllListes(); // To replace view index
 		
+	@Query("#{#n1ql.selectEntity} WHERE #{#n1ql.filter} AND titre=$1")
+	List<Test> findWithParam(String titre);
 }

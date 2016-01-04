@@ -35,6 +35,7 @@ modControleurs.controller("CreationListeCtrl", ["$scope", "ComposantParametres",
 	
 	/* Enrichissement du scope */
 	$scope.dateRedaction = new Date().toLocaleDateString();
+	$scope.formTitre;
 	$scope.formDesignation;
 	$scope.formQte;
 	$scope.formUnite;
@@ -42,7 +43,7 @@ modControleurs.controller("CreationListeCtrl", ["$scope", "ComposantParametres",
 	$scope.messageWait = "Chargement des données ..."
  	
 	ComposantParametres.lire().then(
-		function(data) {
+		function(data) { 
 			$scope.paramListeProduits = [{designation:"ajouter un nouveau produit"}].concat(data.produits);
 			$scope.paramListeUnites = [{designation:"ajouter une nouvelle unité"}].concat(data.unites);
 			$scope.messageWait = "";
@@ -73,9 +74,11 @@ modControleurs.controller("CreationListeCtrl", ["$scope", "ComposantParametres",
 	$scope.saveListe = function() {
 		ComposantListe.creerListe({
 			dateRedaction: $scope.dateRedaction,
+			titre : $scope.formTitre,
 			courses: $scope.formCourses
 		}).then( 
 			function() {
+				$scope.formTitre = "";
 				$scope.formDesignation = "";
 				$scope.formQte = "";
 				$scope.formCourses = [];

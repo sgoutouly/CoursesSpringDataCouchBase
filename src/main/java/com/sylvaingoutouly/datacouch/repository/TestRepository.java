@@ -19,4 +19,6 @@ public interface TestRepository extends CrudRepository<Test, String> {
 	@Query("SELECT #{#n1ql.fields}, dateRedaction FROM #{#n1ql.bucket} WHERE _class='com.sylvaingoutouly.datacouch.model.Liste'")
 	List<Test> findAllTests();
 	
+
+	
 }
