@@ -13,6 +13,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 import java.util.concurrent.Callable;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.couchbase.core.CouchbaseOperations;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpEntity;
@@ -29,8 +30,9 @@ import com.sylvaingoutouly.datacouch.repository.TestRepository;
 @RequestMapping( value = "/courses/listes")
 public class ListesController {
 
-	@Autowired ListeRepository listes;
-	@Autowired TestRepository tests;
+	@Autowired private ListeRepository listes;
+	@Autowired private TestRepository tests;
+	@Autowired private CouchbaseOperations couchbaseTemplate;
 	
 	@RequestMapping(method = GET, value = "/{id}")
 	public Callable<HttpEntity<?>> liste(@PathVariable final String id) {
@@ -44,7 +46,6 @@ public class ListesController {
 	@RequestMapping(method = GET)
 	public Callable<HttpEntity<?>> listes() {
 		return () -> {
-			System.err.println(listes.findWithParam("une autre liste"));
 			Resources<Liste> resources = new Resources<Liste>(listes.findAll());
 			resources.add(linkTo(methodOn(ListesController.class).listes()).withSelfRel());
 			return ok(resources);

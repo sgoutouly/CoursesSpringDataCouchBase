@@ -7,9 +7,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.couchbase.config.AbstractCouchbaseConfiguration;
 import org.springframework.data.couchbase.core.query.Consistency;
 
+import com.couchbase.client.java.query.N1qlQuery;
+import com.couchbase.client.java.view.ViewQuery;
+
 @Configuration
 public class CouchBaseConfig extends AbstractCouchbaseConfiguration {
-
+	
     @Override
     protected List<String> getBootstrapHosts() {
         return Collections.singletonList("127.0.0.1");
