@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import rx.Observable;
+
 import com.sylvaingoutouly.datacouch.model.Liste;
 import com.sylvaingoutouly.datacouch.repository.ListeRepository;
 import com.sylvaingoutouly.datacouch.repository.TestRepository;
@@ -41,6 +43,12 @@ public class ListesController {
 			resource.add(linkTo(methodOn(ListesController.class).liste(id)).withSelfRel());
 			return ok(resource);
 		};
+	}
+	
+	@RequestMapping(method = GET, value = "/observable")
+	public Observable<HttpEntity<?>> observable() {
+		Resource<Liste> resource = new Resource<Liste>(new Liste());
+		return Observable.just(ok(resource));
 	}
 
 	@RequestMapping(method = GET)
