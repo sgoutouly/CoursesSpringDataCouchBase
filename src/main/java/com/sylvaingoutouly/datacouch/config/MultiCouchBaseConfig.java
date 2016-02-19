@@ -1,5 +1,6 @@
 package com.sylvaingoutouly.datacouch.config;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,12 +11,13 @@ import org.springframework.data.couchbase.core.CouchbaseTemplate;
 
 import com.couchbase.client.java.Bucket;
 
-@Configuration
+//@Configuration
 public class MultiCouchBaseConfig extends AbstractCouchbaseConfiguration {
 	
     @Override
     protected List<String> getBootstrapHosts() {
-        return Collections.singletonList("127.0.0.1");
+    	return Arrays.asList("172.17.0.2, 172.17.0.3, 172.17.0.4");
+        //return Collections.singletonList("127.0.0.1");
     }
 
     @Override

@@ -3,10 +3,12 @@ package fr.laposte.disf.fwmc.arch.isolation.nosql;
 import static com.couchbase.client.java.view.Stale.FALSE;
 import static java.lang.System.out;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +22,7 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 
 import com.couchbase.client.java.AsyncBucket;
-import com.couchbase.client.java.document.Document;
+import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.document.JsonDocument;
 import com.couchbase.client.java.document.SerializableDocument;
 import com.couchbase.client.java.view.AsyncViewResult;
@@ -28,22 +30,70 @@ import com.couchbase.client.java.view.AsyncViewRow;
 import com.couchbase.client.java.view.ViewQuery;
 import com.couchbase.client.java.view.ViewResult;
 import com.couchbase.client.java.view.ViewRow;
-import com.sylvaingoutouly.Data;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sylvaingoutouly.datacouch.config.CouchBaseConfig;
 
+import fr.laposte.disf.fwmc.arch.isolation.nosql.Functions.DumpError;
+import fr.laposte.disf.fwmc.arch.isolation.nosql.Functions.DumpString;
+import fr.laposte.disf.fwmc.arch.isolation.nosql.Functions.EmptySerializableOnError;
+import fr.laposte.disf.fwmc.arch.isolation.nosql.Functions.Id;
 import fr.laposte.disf.fwmc.arch.isolation.nosql.Functions.Remove;
-import static fr.laposte.disf.fwmc.arch.isolation.nosql.Functions.Rows;
-import static fr.laposte.disf.fwmc.arch.isolation.nosql.Functions.Id;
-import static fr.laposte.disf.fwmc.arch.isolation.nosql.Functions.DumpError;
-import static fr.laposte.disf.fwmc.arch.isolation.nosql.Functions.DumpString;
-import static fr.laposte.disf.fwmc.arch.isolation.nosql.Functions.EmptySerializableOnError;
+import fr.laposte.disf.fwmc.arch.isolation.nosql.Functions.Rows;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {CouchBaseConfig.class })
 public class CouchbaseTemplate {
 
+	/** DEFAULT_OBJECT_MAPPER */
+	private static final ObjectMapper DEFAULT_OBJECT_MAPPER = new ObjectMapper();
+
+	/** objectMapper */
+	private static volatile ObjectMapper objectMapper = null;
+	
 	@Autowired private CouchbaseOperations couchbaseTemplate;
 
+	@Getter
+	private static class Data implements Serializable {
+		private String content = "coucou";
+		private List<String> l = Arrays.asList("Un", "deux", "trois");
+	}
+	
+	public static ObjectMapper mapper() {
+		if (objectMapper == null) {
+			return DEFAULT_OBJECT_MAPPER;
+		}
+		else {
+			return objectMapper;
+		}
+	}
+	
+	/**
+	 * Convert an object to JsonNode.
+	 *
+	 * @param data Value to convert in Json.
+	 */
+	public static JsonNode toJson(final Object data) {
+		try {
+			return mapper().valueToTree(data);
+		}
+		catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	@Test
+	public void readContent() {
+		final Bucket bucket = couchbaseTemplate.getCouchbaseBucket();
+		SerializableDocument d1 = SerializableDocument.create("test", new Data());
+		bucket.upsert(d1);
+		SerializableDocument d2 = bucket.get("test", SerializableDocument.class); 
+
+		Serializable o = d2.content();
+		System.err.println(toJson(o).toString());
+		
+	}
+	
 	@Test
 	public void insertContexteProcessus() {
 		final AsyncBucket bucket = couchbaseTemplate.getCouchbaseBucket().async();

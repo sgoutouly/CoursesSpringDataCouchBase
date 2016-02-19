@@ -1,6 +1,6 @@
 package com.sylvaingoutouly.datacouch.config;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.context.annotation.Configuration;
@@ -15,12 +15,13 @@ public class CouchBaseConfig extends AbstractCouchbaseConfiguration {
 	
     @Override
     protected List<String> getBootstrapHosts() {
-        return Collections.singletonList("127.0.0.1");
+      // return Collections.singletonList("192.168.99.100:8191");
+    	return Arrays.asList("172.17.0.2, 172.17.0.3, 172.17.0.4");
     }
 
     @Override
     protected String getBucketName() {
-        return "shopping-list";
+        return "travel-sample";
     }
 
    @Override
